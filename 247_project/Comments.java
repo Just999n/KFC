@@ -1,4 +1,3 @@
-//By Zhongsheng Li
 import java.util.ArrayList;
 
 public class Comments {

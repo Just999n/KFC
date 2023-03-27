@@ -1,8 +1,9 @@
 import java.util.Date;
+import java.util.Scanner;
+import java.util.UUID;
 
 public class User {
-    private int id;
-    public static int count = 0;
+    private UUID id;
     private String firstName;
     private String lastName;
     private Date birthdate;
@@ -10,29 +11,17 @@ public class User {
     private String email;
     private String password;
     private Type type;
-    public User(String name, String email, Date birthdate, String password){
+    public User(String name, String password, String firstName, String lastName, String email, Date birthdate, Type type){
         this.userName = name;
         this.email = email;
         this.birthdate = birthdate;
         this.password = password;
-        this.id = count;
-        count++;
-    }
-    public User(){
-        this.firstName = "";
-        this.lastName = "";
-        this.userName = "";
-        this.password = "";
-        this.email = "";
-        this.birthdate = new Date();
-        this.type = Type.STUDENT;
-        this.id = count;
-        count++;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.type = type;
+        this.id = UUID.randomUUID();
     }
     public User getUserById(int id){
-        if(id == this.id){
-            return this;
-        }
         return null;
     }
     public Date getBirthdate() {
@@ -76,5 +65,29 @@ public class User {
     }
     public void setType(Type type) {
         this.type = type;
+    }
+    public String toString(){
+        return "name: "+firstName+" "+lastName+"\n"+"user name: "+userName+"\n"+"birthday: "+birthdate+"\n"+"email: "+email;
+    }
+    public void editData(Scanner scan){
+        String input;
+        System.out.print("Pleases input firstName: ");
+        input = scan.nextLine();
+        firstName = input;
+        System.out.print("Pleases input lastName: ");
+        input = scan.nextLine();
+        lastName = input;
+        System.out.print("Pleases input birthdate(month/day/year): ");
+        input = scan.nextLine();
+        birthdate = new Date(input);
+        System.out.print("Pleases input userName: ");
+        input = scan.nextLine();
+        userName = input;
+        System.out.print("Pleases input email: ");
+        input = scan.nextLine();
+        email = input;
+        System.out.print("Pleases input password: ");
+        input = scan.nextLine();
+        password = input;
     }
 }

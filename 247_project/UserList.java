@@ -1,23 +1,52 @@
+import java.util.ArrayList;
+
 public class UserList {
-    private Type attribute1;
-    private Type attribute2;
-    private Type attribute3;
-    public Type getAttribute1() {
-        return attribute1;
+    private ArrayList<Teacher> teachers;
+    private ArrayList<Student> students;
+    private ArrayList<User> unconfirmed;
+    public UserList(){
+        teachers = new ArrayList<>();
+        students = new ArrayList<>();
+        unconfirmed = new ArrayList<>();
     }
-    public Type getAttribute2() {
-        return attribute2;
+    public ArrayList<Student> getStudents() {
+        return students;
     }
-    public Type getAttribute3() {
-        return attribute3;
+    public ArrayList<Teacher> getTeachers() {
+        return teachers;
     }
-    public void setAttribute1(Type attribute1) {
-        this.attribute1 = attribute1;
+    public ArrayList<User> getUnconfirmed() {
+        return unconfirmed;
     }
-    public void setAttribute2(Type attribute2) {
-        this.attribute2 = attribute2;
+    public void setStudents(ArrayList<Student> students) {
+        this.students = students;
     }
-    public void setAttribute3(Type attribute3) {
-        this.attribute3 = attribute3;
+    public void setTeachers(ArrayList<Teacher> teachers) {
+        this.teachers = teachers;
+    }
+    public void addUnconfirmed(User pNew){
+        unconfirmed.add(pNew);
+    }
+    public void addStudent(Student newStudent){
+        students.add(newStudent);
+    }
+    public void addTeacher(Teacher newTeacher){
+        teachers.add(newTeacher);
+    }
+    public void logoutStudent(Student e){
+        for(Student s:students){
+            if(s.equals(e)){
+                students.remove(s);
+                break;
+            }
+        }
+    }
+    public void logoutTeacher(Teacher e){
+        for(Teacher s:teachers){
+            if(s.equals(e)){
+                teachers.remove(s);
+                break;
+            }
+        }
     }
 }

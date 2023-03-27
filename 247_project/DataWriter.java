@@ -12,8 +12,28 @@ public class DataWriter extends DataConstants{
     public DataWriter(String file){
         this.file = file;
     }
-    public void write(){
-        jsonObject.put("name", "mkyong.com");
+    public static void write(ArrayList<Student> users){
+        JSONArray array = new JSONArray();
+        for(Student u:users){
+            JSONObject uOne = new JSONObject();
+            uOne.put(USER_USER_NAME,u.getUserName());
+            uOne.put(USER_FIRST_NAME,u.getFirstName());
+            uOne.put(USER_LAST_NAME,u.getLastName());
+            uOne.put(USER_EMAIL,u.getEmail());
+            uOne.put(USER_PASSWORD,u.getPassword());
+            uOne.put(USER_TYPE,u.getType().name().toLowerCase());
+            uOne.put(USER_BIRTHDAY,u.getBirthdate().toString());
+            array.add(uOne);
+        }
+        try (FileWriter file = new FileWriter(USER_FILE_NAME)) {
+
+            file.write(array.toJSONString());
+            file.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        /*jsonObject.put("name", "mkyong.com");
         jsonObject.put("age", new Integer(100));
 
         JSONArray list = new JSONArray();
@@ -23,16 +43,9 @@ public class DataWriter extends DataConstants{
 
         jsonObject.put("messages", list);
 
-        try (FileWriter file = new FileWriter("f:\\test.json")) {
 
-            file.write(jsonObject.toJSONString());
-            file.flush();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        System.out.print(obj);
+*/
+        //System.out.print(obj);
     }
 
     public ArrayList<String> getData() {

@@ -12,6 +12,10 @@ public class Questions {
     public String getQuestion() {
         return question;
     }
+    public void print(){
+        System.out.println(question);
+        System.out.println(options);
+    }
     public void setQuestion(String question) {
         this.question = question;
     }

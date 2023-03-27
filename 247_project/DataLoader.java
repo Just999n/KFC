@@ -7,31 +7,37 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.UUID;
 
 public class DataLoader extends DataConstants{
-    private String file;
-    private JSONArray msg;
-    private ArrayList<String> data;
-    public DataLoader(String file){
-        this.file = file;
-        data = new ArrayList<>();
-    }
-    public void read(){
-        parser = new JSONParser();
-
+    public static ArrayList<User> read(){
         try {
+            ArrayList<User> users = new ArrayList<>();
+            String name, firstName, lastName, email, password, type, birthday;
+            JSONParser parser = new JSONParser();
+            FileReader reader = new FileReader(USER_FILE_NAME);
+            Object obj = parser.parse(reader);
+            JSONArray msg = (JSONArray)obj;
 
-            obj = parser.parse(new FileReader(file));
-
-            jsonObject = (JSONObject) obj;
-            System.out.println(jsonObject);
-            data.add(jsonObject.toJSONString());
-            JSONObject jb = (JSONObject) jsonObject.get("Students");
-            JSONArray msg = (JSONArray) jb.get("firstName");
             for (Object o : msg) {
-                System.out.println(o);
+                JSONObject dataTrans = (JSONObject) o;
+                name = (String)dataTrans.get(USER_USER_NAME);
+                firstName = (String)dataTrans.get(USER_FIRST_NAME);
+                lastName = (String)dataTrans.get(USER_LAST_NAME);
+                email = (String)dataTrans.get(USER_EMAIL);
+                password = (String)dataTrans.get(USER_PASSWORD);
+                type = (String)dataTrans.get(USER_TYPE);
+                birthday = (String)dataTrans.get(USER_BIRTHDAY);
+                if(type.equals("student")){
+                    users.add(new Student(name, password, firstName, lastName, email, new Date(birthday), Type.STUDENT));
+                }else{
+                    users.add(new Teacher(name, password, firstName, lastName, email, new Date(birthday), Type.TEACHER));
+                }
+                //System.out.println(o);
+                //System.out.println(dataTrans.get("firstName"));
             }
-
+            return users;
             /*String name = (String) jsonObject.get("name");
             System.out.println(name);
 
@@ -54,13 +60,6 @@ public class DataLoader extends DataConstants{
         } catch (ParseException e) {
             e.printStackTrace();
         }
-    }
-
-    public void setData(ArrayList<String> data) {
-        this.data = data;
-    }
-
-    public ArrayList<String> getData() {
-        return data;
+        return null;
     }
 }
