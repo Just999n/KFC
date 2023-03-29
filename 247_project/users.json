@@ -1,0 +1,56 @@
+[
+  {
+    "birthday": "Fri Feb 24 12:00:00 CST 2023",
+    "firstName": "Scout",
+    "lastName": "Solace",
+    "password": "123456",
+    "CourseProgress": [
+      {
+        "courseTitle": "python course",
+        "modulesConpleted": 0,
+        "grades": []
+      },
+      {
+        "courseTitle": "javaScript course",
+        "modulesConpleted": 2,
+        "grades": [
+          100,
+          100
+        ]
+      }
+    ],
+    "userName": "Scout Solace",
+    "type": "student",
+    "email": "ema1"
+  },
+  {
+    "birthday": "Fri Mar 03 12:00:00 CST 2023",
+    "firstName": "fn2",
+    "lastName": "ln2",
+    "password": "pas2",
+    "CourseProgress": [
+      {
+        "courseTitle": "python course",
+        "modulesConpleted": 0,
+        "grades": []
+      },
+      {
+        "courseTitle": "javaScript course",
+        "modulesConpleted": 0,
+        "grades": []
+      }
+    ],
+    "userName": "un2",
+    "type": "student",
+    "email": "ema2"
+  },
+  {
+    "birthday": "Fri Feb 24 08:00:00 CST 2023",
+    "firstName": "John",
+    "lastName": "Wisdom",
+    "password": "123456",
+    "userName": "John Wisdom",
+    "type": "teacher",
+    "email": "jds@gmail.com"
+  }
+]
