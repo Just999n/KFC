@@ -1,3 +1,4 @@
+package src;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -29,7 +30,7 @@ public class DataLoader extends DataConstants{
                 type = (String)dataTrans.get(USER_TYPE);
                 birthday = (String)dataTrans.get(USER_BIRTHDAY);
                 if(type.equals("student")){
-                    Student newStudent = new Student(name, password, firstName, lastName, email, new Date(birthday), Type.STUDENT);
+                    Student newStudent = new Student(name, Type.STUDENT, firstName, lastName, email, password, new Date(birthday));
                     JSONArray cp = (JSONArray) dataTrans.get("CourseProgress");
                     ArrayList<CourseProgress> newCP = new ArrayList<>();
                     for(Object cp1:cp){
@@ -38,12 +39,12 @@ public class DataLoader extends DataConstants{
                         //System.out.println("jsonarray: "+grades);
                         ArrayList<Double> newGrades = new ArrayList<>(grades);
                         //System.out.println("array: "+newGrades);
-                        newCP.add(new CourseProgress(null, Integer.parseInt(jsonObject1.get("modulesConpleted").toString()), newGrades));
+                        newCP.add(new CourseProgress(null, newGrades, Integer.parseInt(jsonObject1.get("modulesConpleted").toString())));
                     }
                     newStudent.setCourseProgresses(newCP);
                     users.add(newStudent);
                 }else{
-                    users.add(new Teacher(name, password, firstName, lastName, email, new Date(birthday), Type.TEACHER));
+                    users.add(new Teacher(name, Type.TEACHER, firstName, lastName, email, password, new Date(birthday)));
                 }
                 //System.out.println(o);
                 //System.out.println(dataTrans.get("firstName"));
@@ -83,30 +84,30 @@ public class DataLoader extends DataConstants{
             for(Object o:msg){
                 JSONObject dataTrans = (JSONObject) o;
                 String title = (String) dataTrans.get("title");
-                String languages = (String) dataTrans.get("languages");
-                Languages languagesResult;
-                if(languages.equals(Languages.JAVASCRIPT.name().toLowerCase())){
-                    languagesResult = Languages.JAVASCRIPT;
+                String language = (String) dataTrans.get("languages");
+                Language languageResult;
+                if(language.equals(Language.JAVASCRIPT.name().toLowerCase())){
+                    languageResult = Language.JAVASCRIPT;
                 }else{
-                    languagesResult = Languages.PYTHON;
+                    languageResult = Language.PYTHON;
                 }
                 ArrayList<Module> newModules = new ArrayList<>();
                 JSONArray modules = (JSONArray) dataTrans.get("modules");
                 for(Object m:modules){
                     JSONObject module = (JSONObject) m;
                     JSONArray lessons = (JSONArray) module.get("lessons");
-                    ArrayList<Lessons> newLessons = new ArrayList<>();
+                    ArrayList<Lesson> newLessons = new ArrayList<>();
                     for(Object l:lessons){
                         JSONObject lesson = (JSONObject) l;
                         String lessonName = (String) lesson.get("name");
                         String lessonContent = (String) lesson.get("lessonContent");
-                        Lessons newLesson = new Lessons(lessonName, lessonContent);
+                        Lesson newLesson = new Lesson(lessonName, lessonContent);
                         newLessons.add(newLesson);
                     }
                     String moduleName = (String) module.get("name");
                     JSONObject quiz = (JSONObject) module.get("quiz");
                     JSONArray questions = (JSONArray) quiz.get("questions");
-                    ArrayList<Questions> newQuestions = new ArrayList<>();
+                    ArrayList<Question> newQuestions = new ArrayList<>();
                     for(Object q:questions){
                         JSONObject question = (JSONObject) q;
                         String questionContent = (String) question.get("question");
@@ -116,16 +117,16 @@ public class DataLoader extends DataConstants{
                         for(Object op:options){
                             newOptions.add((String) op);
                         }
-                        Questions newQuestion = new Questions(questionContent, correctAnswer, newOptions);
+                        Question newQuestion = new Question(questionContent, correctAnswer, newOptions);
                         newQuestions.add(newQuestion);
                     }
                     Quiz newQuiz = new Quiz(newQuestions);
                     //暂定
                     JSONArray comments = (JSONArray) module.get("comments");
-                    ArrayList<Comments> newComments = new ArrayList<>();
+                    ArrayList<Comment> newComments = new ArrayList<>();
                     for(Object c:comments){
                         JSONObject comment = (JSONObject) c;
-                        ArrayList<Comments> newReplies = new ArrayList<>();
+                        ArrayList<Comment> newReplies = new ArrayList<>();
                         JSONArray replies = (JSONArray) comment.get("replies");
                         for(Object r:replies){
                             JSONObject repliesComment = (JSONObject) r;
@@ -133,13 +134,13 @@ public class DataLoader extends DataConstants{
                         }
                         newComments.add(readGetComments(comment, newReplies));
                     }
-                    newModules.add(new Module(newLessons, moduleName, newQuiz, newComments));
+                    newModules.add(new Module(moduleName, newLessons, newQuiz, newComments));
                 }
                 JSONArray courseComments = (JSONArray) dataTrans.get("comments");
-                ArrayList<Comments> newCourseComments = new ArrayList<>();
+                ArrayList<Comment> newCourseComments = new ArrayList<>();
                 for(Object cc:courseComments){
                     JSONObject courseComment = (JSONObject) cc;
-                    ArrayList<Comments> courseNewReplies = new ArrayList<>();
+                    ArrayList<Comment> courseNewReplies = new ArrayList<>();
                     JSONArray courseReplies = (JSONArray) courseComment.get("replies");
                     for(Object cr:courseReplies){
                         JSONObject courseRepliesComment = (JSONObject) cr;
@@ -147,7 +148,7 @@ public class DataLoader extends DataConstants{
                     }
                     newCourseComments.add(readGetComments(courseComment, courseNewReplies));
                 }
-                newCourse.add(new Course(title, languagesResult, newModules, newCourseComments));
+                newCourse.add(new Course(title, languageResult, newModules, newCourseComments));
             }
             return newCourse;
         }catch (FileNotFoundException e) {
@@ -159,7 +160,7 @@ public class DataLoader extends DataConstants{
         }
         return null;
     }
-    public static Comments readGetComments(JSONObject comment, ArrayList<Comments> replies){
+    public static Comment readGetComments(JSONObject comment, ArrayList<Comment> replies){
         String commentContent = (String) comment.get("comment");
         JSONObject author = (JSONObject) comment.get("author");
         Date birthday = new Date(author.get("birthday").toString());
@@ -175,7 +176,7 @@ public class DataLoader extends DataConstants{
             typeResult = Type.TEACHER;
         }
         String email = (String) author.get("email");
-        User newAuthor = new User(userName,password,firstName,lastName,email,birthday,typeResult);
-        return new Comments(commentContent, newAuthor, replies);
+        User newAuthor = new User(userName,typeResult,firstName,lastName,email,password,birthday);
+        return new Comment(commentContent, newAuthor, replies);
     }
 }

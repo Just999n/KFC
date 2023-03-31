@@ -1,3 +1,4 @@
+package src;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -29,7 +30,7 @@ public class DataWriter extends DataConstants{
                 JSONObject scpOne = new JSONObject();
                 scpOne.put("courseTitle", scp1.getCourse().getTitle());
                 scpOne.put("grades", scp1.getGrades());
-                scpOne.put("modulesConpleted", scp1.getModulesConpleted());
+                scpOne.put("modulesConpleted", scp1.getModulesCompleted());
                 saveSCP.add(scpOne);
             }
             uOne.put("CourseProgress", saveSCP);
