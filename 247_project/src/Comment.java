@@ -72,7 +72,6 @@ public class Comment {
         }
     }
     save.put("replies", saveReplies);
-   save.put("replies", saveReplies);
   }
 }
  
